@@ -7,24 +7,17 @@ import { useRouter } from 'next/router'
 import cs from 'classnames'
 import { PageBlock } from 'notion-types'
 import { formatDate, getBlockTitle, getPageProperty } from 'notion-utils'
-import BodyClassName from 'react-body-classname'
 import { NotionRenderer } from 'react-notion-x'
-import TweetEmbed from 'react-tweet-embed'
 import { useSearchParam } from 'react-use'
 
 import * as config from '@/lib/config'
 import * as types from '@/lib/types'
 import { mapImageUrl } from '@/lib/map-image-url'
 import { getCanonicalPageUrl, mapPageUrl } from '@/lib/map-page-url'
-import { searchNotion } from '@/lib/search-notion'
 import { useDarkMode } from '@/lib/use-dark-mode'
 
-import { Footer } from './Footer'
-import { GitHubShareButton } from './GitHubShareButton'
 import { Loading } from './Loading'
-import { NotionPageHeader } from './NotionPageHeader'
 import { Page404 } from './Page404'
-import { PageAside } from './PageAside'
 import { PageHead } from './PageHead'
 import styles from './styles.module.css'
 
@@ -97,10 +90,6 @@ const Modal = dynamic(
   }
 )
 
-const Tweet = ({ id }: { id: string }) => {
-  return <TweetEmbed tweetId={id} />
-}
-
 const propertyLastEditedTimeValue = (
   { block, pageHeader },
   defaultFn: () => React.ReactNode
@@ -160,8 +149,6 @@ export const NotionPage: React.FC<types.PageProps> = ({
       Equation,
       Pdf,
       Modal,
-      Tweet,
-      Header: NotionPageHeader,
       propertyLastEditedTimeValue,
       propertyTextValue,
       propertyDateValue
@@ -193,15 +180,6 @@ export const NotionPage: React.FC<types.PageProps> = ({
   const showTableOfContents = !!isBlogPost
   const minTableOfContentsItems = 3
 
-  const pageAside = React.useMemo(
-    () => (
-      <PageAside block={block} recordMap={recordMap} isBlogPost={isBlogPost} />
-    ),
-    [block, recordMap, isBlogPost]
-  )
-
-  const footer = React.useMemo(() => <Footer />, [])
-
   if (router.isFallback) {
     return <Loading />
   }
@@ -228,60 +206,27 @@ export const NotionPage: React.FC<types.PageProps> = ({
     g.block = block
   }
 
-  const canonicalPageUrl =
-    !config.isDev && getCanonicalPageUrl(site, recordMap)(pageId)
-
-  const socialImage = mapImageUrl(
-    getPageProperty<string>('Social Image', block, recordMap) ||
-      (block as PageBlock).format?.page_cover ||
-      config.defaultPageCover,
-    block
-  )
-
-  const socialDescription =
-    getPageProperty<string>('Description', block, recordMap) ||
-    config.description
-
   return (
-    <>
-      <PageHead
-        pageId={pageId}
-        site={site}
-        title={title}
-        description={socialDescription}
-        image={socialImage}
-        url={canonicalPageUrl}
-      />
-
-      {isLiteMode && <BodyClassName className='notion-lite' />}
-      {isDarkMode && <BodyClassName className='dark-mode' />}
-
-      <NotionRenderer
-        bodyClassName={cs(
-          styles.notion,
-          pageId === site.rootNotionPageId && 'index-page'
-        )}
-        darkMode={isDarkMode}
-        components={components}
-        recordMap={recordMap}
-        rootPageId={site.rootNotionPageId}
-        rootDomain={site.domain}
-        fullPage={!isLiteMode}
-        previewImages={!!recordMap.preview_images}
-        showCollectionViewDropdown={false}
-        showTableOfContents={showTableOfContents}
-        minTableOfContentsItems={minTableOfContentsItems}
-        defaultPageIcon={config.defaultPageIcon}
-        defaultPageCover={config.defaultPageCover}
-        defaultPageCoverPosition={config.defaultPageCoverPosition}
-        mapPageUrl={siteMapPageUrl}
-        mapImageUrl={mapImageUrl}
-        searchNotion={config.isSearchEnabled ? searchNotion : null}
-        pageAside={pageAside}
-        footer={footer}
-      />
-
-      <GitHubShareButton />
-    </>
+    <NotionRenderer
+      bodyClassName={cs(
+        styles.notion,
+        pageId === site.rootNotionPageId && 'index-page'
+      )}
+      darkMode={isDarkMode}
+      components={components}
+      recordMap={recordMap}
+      rootPageId={site.rootNotionPageId}
+      rootDomain={site.domain}
+      fullPage={!isLiteMode}
+      previewImages={!!recordMap.preview_images}
+      showCollectionViewDropdown={false}
+      showTableOfContents={showTableOfContents}
+      minTableOfContentsItems={minTableOfContentsItems}
+      defaultPageIcon={config.defaultPageIcon}
+      defaultPageCover={config.defaultPageCover}
+      defaultPageCoverPosition={config.defaultPageCoverPosition}
+      mapPageUrl={siteMapPageUrl}
+      mapImageUrl={mapImageUrl}
+    />
   )
 }
