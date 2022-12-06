@@ -112,7 +112,7 @@
   border-left: 4px solid #00ab44;
 }
 
-.notion-h1  {
+.notion-h2  {
   margin-bottom: 0.25em;
   color: #00ab44;
   text-transform: uppercase;
@@ -121,6 +121,10 @@
 .notion-h2,
 .notion-h3 {
   margin-bottom: 0.25em;
+}
+
+summary {
+  font-weight: 500
 }
 
 .notion-callout {
@@ -369,3 +373,4 @@
 .notion-header {
   display: none;
 }
+
