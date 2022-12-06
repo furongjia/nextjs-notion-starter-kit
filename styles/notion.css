@@ -185,7 +185,6 @@
 .notion-page-cover-wrapper span,
 .notion-page-cover-wrapper img {
   max-width: 1200px !important;
-  border-radius: 24px;
 }
 
 .notion-page-cover-wrapper {
@@ -364,5 +363,9 @@
 }
 
 .notion-block-260baa77f1e1428b97fb14ac99c7c385 {
+  display: none;
+}
+
+.notion-header {
   display: none;
 }
