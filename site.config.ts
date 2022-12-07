@@ -2,7 +2,7 @@ import { siteConfig } from './lib/site-config'
 
 export default siteConfig({
   // the site's root Notion page (required)
-  rootNotionPageId: 'e2151c720a044140a113034ba534dac1',
+  rootNotionPageId: '4ab4155d2c104b1eb5b72dfaf239a558',
 
   // if you want to restrict pages to a single notion workspace (optional)
   // (this should be a Notion ID; see the docs for how to extract this)
@@ -11,8 +11,8 @@ export default siteConfig({
   // basic site info (required)
   name: 'Next.js Notion CV Site',
   domain: 'nextjs-notion-starter-kit.transitivebullsh.it',
-  author: 'Kai Tuo',
-  linkedin: 'tuo',
+  author: 'Furong Jia',
+  linkedin: 'cecilia（furong）-jia-167066b4',
 
   // open graph metadata (optional)
   description: 'My CV Site backed by Next.js and Notion',
